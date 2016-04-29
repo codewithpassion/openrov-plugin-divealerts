@@ -1,9 +1,15 @@
 (function (window, $, undefined) {
     'use strict';
-
+    
     var divealerts;
     var template = '';
     var beeptone = '';
+
+    var head = document.getElementsByTagName("head")[0];
+    var js = document.createElement("script");
+    js.type = "text/javascript";
+    js.src = 'components/bootstrap.growl/dist/bootstrap-growl.js';
+    head.appendChild(js);    
 
     var dive_alert;
     dive_alert = function dive_alert(name,description,alerttype,rule){
@@ -24,7 +30,7 @@
       //  if (self.displayed) return;
         console.log('divealert:' + self.name + ' detected');
         if (Date.now() < self.sleep_till) return;
-        $.growl(description, {element: '#video-container',
+        $.growl(description, {element: 'body',
                               delay:1000*60*5,
                               type:this.alerttype,
                               template:template,
@@ -104,25 +110,7 @@
                                               return false;
                                             }));
 
-    //example keyboard hook
-    /*
-    this.cockpit.emit('inputController.register',
-      {
-        name: "divealerts.keyBoardMapping",
-        description: "Example for keymapping.",
-        defaults: { keyboard: 'alt+0', gamepad: 'X' },
-        down: function() { console.log('0 down'); },
-        up: function() { console.log('0 up'); },
-        secondary: [
-          {
-            name: "divealerts.keyBoardMappingDepdent",
-            dependency: "divealerts.keyBoardMapping",
-            defaults: { keyboard: '9', gamepad: 'RB' },
-            down: function() { console.log('####'); }
-          }
-        ]
-      });
-    */
+    
 
     // for plugin management:
     this.name = 'divealerts';   // for the settings
@@ -146,10 +134,7 @@
     $.get(jsFileLocation + '../alerttemplate.html',function(data){
       template = data;
     });
-    $.getScript('plugin_components/bootstrap.growl/dist/bootstrap-growl.min.js',function(){
-      console.log("loaded");
-      $.growl("The divealert plugin has loaded and is now ready to provide feedback!",{element: '#video-container', delay:1000, template:template, type:"info"});
-    });
+
     this.enable();
   };
 
@@ -157,9 +142,20 @@
   divealerts.prototype.listen = function listen() {
     var rov = this;
 
-    this.cockpit.socket.on('status', function (data) {
-      rov.state.status = data;
-    });
+    if ($.growl===undefined){
+      setTimeout(function(){rov.listen()},1000);
+      return;
+    }
+
+      setTimeout(function(){
+            $.growl("The divealert plugin has loaded and is now ready to provide feedback!",{element: 'body', delay:1000, template:template, type:"info"});
+
+      },1000);
+
+//TODO DOM
+    // this.cockpit.socket.on('status', function (data) {
+    //   rov.state.status = data;
+    // });
 
     //This example will put an entry in the pop-up Heads Up Menu
     /*

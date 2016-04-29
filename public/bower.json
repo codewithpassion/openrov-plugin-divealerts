@@ -3,7 +3,7 @@
   "description": "real-time alerts based on telemetry data analysis",
   "version": "0.0.0",
   "homepage": "",
-  "main": "public/js/divealerts.js",
+  "main": "js/divealerts.js",
   "keywords": [
     "openrov",
     "plugin"

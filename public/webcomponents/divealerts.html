@@ -1,0 +1,33 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../orov-behaviors/orov-behavior.html">
+<dom-module name="orov-example">
+  <style>
+  </style>
+  <template>
+    <div><span on-click='handleClick'>{{__('Example')}}</span>:<span>{{Name}}</span></div>
+  </template>
+  <script>
+    (function() {
+      Polymer({
+        is: "orov-divealerts",
+        properties: {
+          Name: {
+            type: String,
+          }
+        },
+
+        //The oROVStandard behavior makes the widget eventEmitter enabled
+        behaviors: [namespace('behaviors').oROVStandard],
+
+        },
+
+        //This function is called by the oROVStandard behavior
+        registerEmitterHanlders: function(emitter){
+          var self = this;
+        }
+
+      })
+    })();
+  </script>
+
+</dom-module>
